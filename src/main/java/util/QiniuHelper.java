@@ -7,25 +7,24 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by Administrator on 2017/8/16.
  * 七牛相关方法
  */
 public class QiniuHelper {
+    public static final String QINIU_INI = "qiniu.ini";
+
     /**
-     * 返回{ak, sk, bucket_name}
+     * @return [ak, sk, bucket_name, cdn_url]
      */
     public static String[] readIni(){
-        File file = new File("qiniu.ini");
         BufferedReader reader = null;
         String[] ini = new String[4];
         try {
-            reader = new BufferedReader(new FileReader(file));
+            InputStream inputStream = ClassLoader.getSystemResourceAsStream(QINIU_INI);
+            reader = new BufferedReader(new InputStreamReader(inputStream));
             String tempString = null;
             int line = 1;
             while ((tempString = reader.readLine()) != null) {

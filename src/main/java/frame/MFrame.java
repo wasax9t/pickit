@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * swing程序最小化至系统托盘
@@ -18,19 +19,20 @@ public class MFrame {
 
     public static void main(String[] args) {
         try {
-            createTrayIcon();
+            new MFrame().createTrayIcon();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void createTrayIcon() throws IOException {
+    public void createTrayIcon() throws IOException {
 
         TrayIcon trayIcon = null;
         if (SystemTray.isSupported()) // 判断系统是否支持系统托盘
         {
             SystemTray tray = SystemTray.getSystemTray(); // 创建系统托盘
-            Image image = ImageIO.read(new File(ICO_LOCATION));
+            URL icoUrl = ClassLoader.getSystemResource(ICO_LOCATION);
+            Image image = ImageIO.read(icoUrl);
 
             ActionListener listener = event -> {
                 JFrame frame = new JFrame();
