@@ -10,9 +10,9 @@ import java.util.Date;
 
 public class Main {
 
-    public static final String TMP_PATH = "E:\\temp";
-    public static final String QINIU_URL = "http://or4o97iuj.bkt.clouddn.com";
-    public static final String NAME_PREFIX = "prtimg";
+    public static final String TMP_PATH = "C:\\temp";
+    public static final String QINIU_URL = "http://or4o97iuj.bkt.clouddn.com"; //被ini取代
+    public static final String NAME_PREFIX = "prtimg_";
 
     public Main() {
         try {
@@ -44,11 +44,13 @@ public class Main {
 
                 ClipboardHelper.saveImg(image, imgLocation);
 
-                QiniuHelper.uploadImg(imgLocation, fileName);
-                String imgUrl = QINIU_URL + "/" + fileName;
+                String[] qiniuIni = QiniuHelper.readIni();
+                QiniuHelper.uploadImg(imgLocation, fileName, qiniuIni[0], qiniuIni[1], qiniuIni[2]);
+                String imgUrl = qiniuIni[3] + "/" + fileName;
 
                 ClipboardHelper.setText(clipboard, imgUrl);
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 e.printStackTrace();
             }
         }

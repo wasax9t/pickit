@@ -20,10 +20,10 @@ public class QiniuHelper {
     /**
      * 返回{ak, sk, bucket_name}
      */
-    static String[] readIni(){
+    public static String[] readIni(){
         File file = new File("qiniu.ini");
         BufferedReader reader = null;
-        String[] ini = new String[3];
+        String[] ini = new String[4];
         try {
             reader = new BufferedReader(new FileReader(file));
             String tempString = null;
@@ -49,18 +49,13 @@ public class QiniuHelper {
 
     /**
      * 上传图片到七牛云
-     * ak,sk,bucket_name都从ini文件中读出
+     * ak,sk,bucket_name都应从ini文件中读出
      * @param imgPath 文件位置
      * @param imgName 最终文件名
-     * @return success?
      */
-    public static boolean uploadImg(String imgPath, String imgName) {
-        String[] ini = readIni();
-        String ak = ini[0];
-        String sk = ini[1];
-        String bucket = ini[2];
+    public static void uploadImg(String imgPath, String imgName, String ak, String sk, String bucket) {
         Auth auth = Auth.create(ak, sk);
-        Zone z = Zone.zone0();
+        Zone z = Zone.autoZone();
         Configuration c = new Configuration(z);
         UploadManager uploadManager = new UploadManager(c);
         String token = auth.uploadToken(bucket);
@@ -70,7 +65,6 @@ public class QiniuHelper {
             Response res = uploadManager.put(imgPath, imgName, token);
             //打印返回的信息
             System.out.println(res.bodyString());
-            return true;
         } catch (QiniuException e) {
             Response r = e.response;
             // 请求失败时打印的异常的信息
@@ -82,7 +76,6 @@ public class QiniuHelper {
                 //ignore
             }
         }
-        return false;
     }
 
     public static void main(String[] args) {

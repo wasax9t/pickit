@@ -10,6 +10,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import javax.swing.JFrame;
 /**
+ * 探索历程，未使用
  * 剪贴板监控器
  * 负责对剪贴板的监控和操作
  * 由于监控需要一个对象作为ClipboardOwner，故不能用静态类
